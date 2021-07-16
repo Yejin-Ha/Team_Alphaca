@@ -44,6 +44,17 @@ class watermelon():
             last_height = new_height
 
 
+            '''
+            boxitems = soup.find("tbody").find_all("tr")
+            for boxitem in boxitems:
+
+                title = boxitem.select("td")[4].div.div.select('div')[0].a.text
+                artist = boxitem.select("td")[4].div.div.select('div')[1].a.text
+                img_title = boxitem.select("td")[2].div.a.attrs['title']
+                print('곡 제목: ',title, ", 가수: ",artist)
+                print("--" * 10)
+            '''
+
 
         print("-----화면 제일 하단 스크롤 로딩 완료----")
 
