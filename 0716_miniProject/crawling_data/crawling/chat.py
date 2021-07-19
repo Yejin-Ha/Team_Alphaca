@@ -1,10 +1,8 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
-import pandas as pd
 import time
 
-
-def newest_list():
+def newest_list2():
     main_url = "https://www.melon.com/"
 
     driver = webdriver.Chrome("c:/driver/chromedriver.exe")
@@ -53,6 +51,13 @@ def newest_list():
 
             comment_info = detailsoup.find(class_="share").find("dl")
             comment = comment_info.dd.find("span").text
+            
+            totalcmt = detailsoup.find(class_="list_cmt")
+
+            # cmt = totalcmt.ul.select("li").div.div.attrs['data-member-key']
+            cmt = totalcmt.ul.li.find(class_="ellipsis")
+            # cmt = totalcmt.attrs['']
+            print(cmt)
 
             print('-' * 60)
             print("순위 : {}위".format(rank))
@@ -75,6 +80,5 @@ def newest_list():
         print('크롤링을 종료합니다.')
         driver.close()
 
-
 if __name__ == '__main__':
-    newest_list()
+    newest_list2()
