@@ -1,8 +1,7 @@
 from flask import Flask, request, render_template, jsonify, redirect
-
+from dao import bank_get2
 
 app = Flask(__name__)
-
 
 # home 화면
 @app.route('/', methods=['get'])
@@ -18,6 +17,4 @@ def index():
 
 
 if __name__ == '__main__':
-    # Flask 로 실행하기 위한 필수 코드
-    # debug = True : 서버가 실행중이더라도 소스 수정 -> 자동 갱신이 가능
     app.run(debug=True)
