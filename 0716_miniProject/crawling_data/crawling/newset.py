@@ -2,7 +2,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
-
+import csv, requests
+import pandas as pd
 
 def newest_list():
     main_url = "https://www.melon.com/"
