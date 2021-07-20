@@ -1,5 +1,6 @@
+from datetime import date
 from flask import Flask, request, render_template, jsonify, redirect
-from dao import bank_get2
+from dao import *
 
 app = Flask(__name__)
 
@@ -7,13 +8,10 @@ app = Flask(__name__)
 @app.route('/', methods=['get'])
 def index():
     print('Open index page')
-    return render_template('index.html')
-
-
-# @app.route('/getfilm',methods=['POST'])
-# def getFilm():
-#     dao = Camera()
-#     return dao.allFilms()
+    singer = h_singer()
+    songs = h_song()
+    print('Load data from ES')
+    return render_template('index.html', singer=singer, song=songs)
 
 
 if __name__ == '__main__':
