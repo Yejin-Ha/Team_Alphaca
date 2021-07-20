@@ -11,28 +11,45 @@
         body {
             margin: 0px;
             height: 100vh;
-            width: 100vw;
         }
 
-        .container_1 {
+        /* .container_1 {
             min-height: 80%;
-        }
+        } */
 
         .contentbox_title {
             text-align: center;
-            margin-top: 100px;
+            margin-top: 70px;
             margin-bottom: 5%;
         }
 
-        .contentbox {
+        .contentbox_title>h1 {
+            margin-bottom: 0;
+        }
+
+        #detail_hot_singer {
+            margin-top: 0;
+        }
+
+        .contentbox-1 {
             display: flex;
             padding: 0 130px;
             justify-content: space-around;
+            margin-bottom: 65px;
         }
 
         .contents {
             width: 33%;
-            min-height: 300px;
+            height: 250px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        .contents>h1 {
+            margin: 10px 0 0 0;
         }
 
         .container_2 {
@@ -40,17 +57,16 @@
             min-height: 45%;
         }
 
-        .test {
+        .contentbox-2 {
             margin-left: 150px;
             margin-right: 150px;
             padding-top: 5%;
-
             display: flex;
             justify-content: space-between;
         }
 
         .dashbord_1 {
-            width: 35%;
+            width: 37%;
             border: 0.5px solid #ffa500bf;
             background-color: #ffa500bf;
             /* border-radius: 80px / 40px; */
@@ -61,45 +77,175 @@
             width: 62%;
             background-color: white;
         }
+
+        footer {
+            background-color: #4d4e54;
+            color: white;
+            /* text-align: center; */
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: white;
+        }
+
+        #Github-btn {
+            border-radius: 8px;
+            border: none;
+            color: white;
+            text-align: center;
+            display: inline-block;
+            margin-left: 1%;
+            padding: 3px 13px;
+
+        }
+
+        #Github-btn:hover {
+            background-color: teal;
+            color: white;
+        }
+
+        #highlight {
+            background-color: #ff6fcf;
+            color: white;
+        }
+
+        #hot_song {
+            background-color: #3fdada;
+            color: white;
+        }
+
+        .arrow-box {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .contents>h2 {
+            margin: 10px 0;
+        }
+
+        .contents>h4 {
+            margin: 0;
+        }
     </style>
 </head>
 
 <body>
     <div class="container_1">
         <div class="contentbox_title">
-            <h1>여기의 주제를 슬적 보여주면 됩니다(글씨 더 크게 가능)</h1>
-            세부 사항을 여기에 적으면 되겠다.<br>
-            화살표가 안생겨요....이미지가 안긁혀와여 8ㅅ8 하단에 넣을 이미지입니다아ㅏㅇ<br>
+            <h1>신곡 들은지 얼마나 오렌지(๑°ㅁ°๑)&#10071;&#10071;✧</h1>
+            Melon의 24h 실시간 차트를 기반으로 제작하였습니다.
         </div>
-        <div class="contentbox">
+        <div class="contentbox-1">
             <div class="contents" style="background-color: #a4fbfb47;">
-                <h1>df</h1>
-                너비가 좁으면 width를 넓히거나 margin을 줄이거나 3개가 아닌 2개로 줄이거나!
+                <h1>실시간</h1>
+                <h1>가장 <span style="color: #3fdada;">Hot</span>한 노래</h1>
+                <h2><span id="hot_song"></span></h2>
             </div>
+
             <div class="contents" style="background-color: #eef9ec;">
-                <h1>df</h1>
-                높이는 컨텐츠 넣으면 더 늘어나니까 신경 노노릥
+                <h1><span style="color: #69de53;">{artist}</span>의 {title}이</h1>
+                <h1><span style="color: #69de53;">{발매일}</span>째</h1>
+                <h1>사랑받고 있어요❤️</h1>
             </div>
+
             <div class="contents" style="background-color: #fbecf6;">
-                <h1>df</h1>
-                이미 min-height 먹여놨다구여
+                <h1>현재 차트 지분</h1>
+                <h1><span style="color: #ff6fcf;">1위</span>는</h1>
+                <h1 id="hot_singer"></h1>
+                <h4 id="detail_hot_singer"></h4>
             </div>
+
         </div>
-        <img src="static/image/down-triangular-arrow.png" width="150" height="150">
+        <div class="arrow-box">
+            <img src="../static/image/arrow.png" width="65" height="40">
+        </div>
     </div>
 
     <div class="container_2">
-        <div class="test">
+        <div class="contentbox-2">
 
             <div class="dashbord_1">
                 <iframe src="http://localhost:5601/goto/41165f8abcfef8961b7054a820c29e78"></iframe>
             </div>
             <div class="dashbord_2">
-                <h1>세부 그래프...?</h1>
-                이래저래 넣어봅시다요
+                <h1>장르 필터링 테이블이 들어갑니다.</h1>
             </div>
         </div>
     </div>
+
+    <footer>
+        Team-Alphaca
+        <button id="Github-btn"><a href="https://github.com/Yejin-Ha/Team_Alphaca/tree/master/0716_miniProject">Go to
+                Github</a></button>
+    </footer>
+
+    <script>
+        let hsinger = '{{singer}}';
+        let song = '{{song}}';
+        console.log(song)
+
+        song = song.replaceAll("&#39;", "'");
+        hsinger = hsinger.replaceAll("&#39;", "'");
+        console.log(hsinger);
+        console.log(song);
+        
+        hsinger = "[" + hsinger + "]"
+        song = "[" + song + "]"
+        console.log(hsinger)
+
+        song = eval(song);
+        hsinger = eval(hsinger);
+
+        console.log(hsinger);
+        console.log(song);
+        document.getElementById('hot_song').innerText = song[0]['artist'] + " - " + song[0]['title']
+        document.getElementById('hot_singer').innerHTML = `<span id='highlight'>${hsinger[0]['artist']}</span>입니다`
+        document.getElementById('detail_hot_singer').innerText = hsinger[0]['count'] + "곡이나 있다구요ヽ(°〇°)ﾉ!!"
+
+    </script>
+    <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['table'] });
+        google.charts.setOnLoadCallback(drawTable);
+
+
+        function drawTable() {
+            let v = '{{datas}}';
+
+            v = v.replaceAll("&#39;", "'");
+            console.log(v);
+            v = eval(v);
+            console.log(v);
+
+            var data = new google.visualization.DataTable();
+
+            data.addColumn('string', 'date');
+            data.addColumn('string', 'artist');
+            asdf = [];
+
+            for (i = 0; i < 10; i++) {
+                asdf.push([v[i]['date'], v[i]['artist']]);
+            };
+            console.log(asdf)
+            data.addRows(asdf)
+
+            var table = new google.visualization.Table(document.getElementById('teststs'));
+
+            table.draw(data, { showRowNumber: true, width: '100%', height: '100%' });
+        }
+    </script> -->
+
 </body>
 
 </html>
