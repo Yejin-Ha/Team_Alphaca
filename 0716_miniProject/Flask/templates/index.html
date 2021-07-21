@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <title>Orange</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../static/image/orangeicon.ico">
+    <link rel="icon" type="image/x-icon" href="../static/image/orangeicon.ico">
     <style>
         body {
             margin: 0px;
@@ -58,15 +59,15 @@
         }
 
         .contentbox-2 {
-            margin-left: 150px;
-            margin-right: 150px;
+            margin-left: 120px;
+            margin-right: 120px;
             padding-top: 5%;
             display: flex;
             justify-content: space-between;
         }
 
         .dashbord_1 {
-            width: 37%;
+            width: 30%;
             border: 0.5px solid #ffa500bf;
             background-color: #ffa500bf;
             /* border-radius: 80px / 40px; */
@@ -74,8 +75,9 @@
         }
 
         .dashbord_2 {
-            width: 62%;
+            width: 68%;
             background-color: white;
+            padding-bottom: 20px;
         }
 
         footer {
@@ -137,7 +139,56 @@
         .contents>h4 {
             margin: 0;
         }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 95%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            padding: 0 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fcf4ca;
+        }
+
+        .chart-box {
+            display: flex;
+            justify-content: center;
+        }
+
+        #genre_btn {
+            display: flex;
+            width: 95%;
+            justify-content: space-around;
+            margin-bottom: 8px;
+        }
+
+        #btn {
+            border-radius: 4px;
+            background-color: #fe8000;
+            /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 3px 2px;
+            cursor: pointer;
+        }
+
+        .dashbord_2>h1 {
+            margin-left: 20px;
+            display: inline-block;
+        }
     </style>
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://platform.linkedin.com ">
 </head>
 
 <body>
@@ -176,11 +227,24 @@
         <div class="contentbox-2">
 
             <div class="dashbord_1">
-                <h1>dashbord 정보를 여기에 넣기</h1>
-                1. 수정언니 파이차트 -
+                <h2>장르 점유율</h2>
+                <iframe src="http://localhost:5601/goto/e6a948f46e9640a81111ab601fc3c561" height="380"
+                    width="380"></iframe>
+                <h2>가수 점유율</h2>
+                <iframe src="http://localhost:5601/goto/9544a81fce83ac0291fcaf301333ffdc" height="380"
+                    width="380"></iframe>
+                <h2></h2>
             </div>
             <div class="dashbord_2">
-                <h1>장르 필터링 테이블이 들어갑니다.</h1>
+                <h1>실시간 순위 차트</h1>
+                <span id="chart-time"></span>
+                <div style="display: flex; justify-content: center;">
+                    <div id="genre_btn"></div>
+                </div>
+                <div class="chart-box" style="overflow:auto; width: 100%; height:850px;">
+
+                    <table id="live_chart"></table>
+                </div>
             </div>
         </div>
     </div>
@@ -194,59 +258,100 @@
     <script>
         let hsinger = '{{singer}}';
         let song = '{{song}}';
-        console.log(song)
+        let chart = '{{chart}}';
+        let all_genre = '{{all_genre}}';
 
         song = song.replaceAll("&#39;", "'");
         hsinger = hsinger.replaceAll("&#39;", "'");
-        console.log(hsinger);
-        console.log(song);
-        
+        chart = chart.replaceAll("&#39;", "'");
+        chart = chart.replaceAll("&amp;", "&");
+        chart = chart.replaceAll("&#34;", '"');
+        all_genre = all_genre.replaceAll("&#39;", "'");
+
         hsinger = "[" + hsinger + "]"
         song = "[" + song + "]"
-        console.log(hsinger)
 
         song = eval(song);
         hsinger = eval(hsinger);
+        chart = eval(chart);
+        all_genre = eval(all_genre);
 
-        console.log(hsinger);
-        console.log(song);
         document.getElementById('hot_song').innerText = song[0]['artist'] + " - " + song[0]['title']
         document.getElementById('hot_singer').innerHTML = `<span id='highlight'>${hsinger[0]['artist']}</span>입니다`
         document.getElementById('detail_hot_singer').innerText = hsinger[0]['count'] + "곡이나 있다구요ヽ(°〇°)ﾉ!!"
+        document.getElementById('chart-time').innerText = chart[0]['date']
 
-    </script>
-    <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['table'] });
-        google.charts.setOnLoadCallback(drawTable);
+        let genre_btns = '<button id="btn" onclick=genre_chart("all")>전체</button>';
 
-
-        function drawTable() {
-            let v = '{{datas}}';
-
-            v = v.replaceAll("&#39;", "'");
-            console.log(v);
-            v = eval(v);
-            console.log(v);
-
-            var data = new google.visualization.DataTable();
-
-            data.addColumn('string', 'date');
-            data.addColumn('string', 'artist');
-            asdf = [];
-
-            for (i = 0; i < 10; i++) {
-                asdf.push([v[i]['date'], v[i]['artist']]);
-            };
-            console.log(asdf)
-            data.addRows(asdf)
-
-            var table = new google.visualization.Table(document.getElementById('teststs'));
-
-            table.draw(data, { showRowNumber: true, width: '100%', height: '100%' });
+        for (i = 0; i < all_genre.length; i++) {
+            genre_btns += `<button id="btn" onclick=genre_chart("${all_genre[i]}")>${all_genre[i]}</button>`;
         }
-    </script> -->
 
+
+        function genre_chart(gen) {
+            var song_lists = []
+            var chart_table = chart_table_th;
+
+            if (gen == 'all') {
+                for (i = 0; i < chart.length; i++) {
+                    chart_table += `<tr><td>${chart[i]['rank']}</td>
+                <td>${chart[i]['title']}</td>
+                <td>${chart[i]['artist']}</td>
+                <td>${chart[i]['album']}</td>
+                <td>${chart[i]['genre']}</td>
+                <td>${chart[i]['release_date']}</td></tr>`;
+                }
+                document.getElementById('live_chart').innerHTML = "";
+                document.getElementById('live_chart').innerHTML = chart_table;
+
+            } else {
+                for (var song of chart) {
+                    song_genre = song['genre'];
+
+                    for (var detail of song_genre) {
+                        if (gen == detail) {
+                            song_lists.push(song);
+                            continue
+                        }
+                    }
+                }
+                console.log(song_lists)
+                for (i = 0; i < song_lists.length; i++) {
+                    chart_table += `<tr><td>${song_lists[i]['rank']}</td>
+                <td>${song_lists[i]['title']}</td>
+                <td>${song_lists[i]['artist']}</td>
+                <td>${song_lists[i]['album']}</td>
+                <td>${song_lists[i]['genre']}</td>
+                <td>${song_lists[i]['release_date']}</td></tr>`;
+                }
+                document.getElementById('live_chart').innerHTML = "";
+                document.getElementById('live_chart').innerHTML = chart_table;
+
+            }
+        }
+
+        let chart_table_th = `<tr>`;
+
+        for (var item of ["순위", "title", 'artist', 'album', '장르', '발매일']) {
+            chart_table_th += `<th>${item}</th>`;
+        }
+
+        chart_table_th += '</tr>';
+
+        let chart_table_td = chart_table_th;
+
+        for (i = 0; i < chart.length; i++) {
+            chart_table_td += `<tr><td>${chart[i]['rank']}</td>
+                <td>${chart[i]['title']}</td>
+                <td>${chart[i]['artist']}</td>
+                <td>${chart[i]['album']}</td>
+                <td>${chart[i]['genre']}</td>
+                <td>${chart[i]['release_date']}</td></tr>`;
+        }
+
+        document.getElementById('live_chart').innerHTML = chart_table_td;
+        document.getElementById('genre_btn').innerHTML = genre_btns;
+    </script>
 </body>
 
 </html>

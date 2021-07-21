@@ -111,13 +111,11 @@ def get_new_chart():
     df2 = pd.DataFrame(csv_data, columns=headerlist)
     df.to_csv(file_name, index=False, mode='w',
               encoding='utf-8-sig', header=False)
-    # print(chart_details)
-    # print(total_genre_lst)
+
     return chart_details, total_genre_lst
 
-def get_hot(self): # singer : 100개, song : 2400개
-    
-    current = dt.datetime.now()
+
+def get_hot(): # singer : 100개, song : 2400개
     csv_data = []
     query = {
         "query": {
@@ -157,15 +155,9 @@ def get_hot(self): # singer : 100개, song : 2400개
         row.append(int(res['hits']['hits'][i]['_source']['comment']))  # 8
         row.append(int(res['hits']['hits'][i]['_source']['like']))  # 9
         csv_data.append(row)
-        # print(data)
-    
-    # print(len(csv_data)) # 2400개 
 
     headerlist = ["date", "rank", "title", "artist", "album",
                 "code", "release_date", "genre", "comment", "like"]
-    # print(csv_data)
-
-    file_name = "hourly_chart.csv"
 
     df = pd.DataFrame(csv_data, columns=headerlist)
     df['date'] = pd.to_datetime(df.date, format='%Y-%m-%d-%H', errors='raise')
@@ -221,16 +213,16 @@ def get_hot(self): # singer : 100개, song : 2400개
     genre = genre[genre.head(5).index].to_frame().reset_index().append(genre_others, ignore_index=True).set_index('genre')
 
     # hot_song
-    # print(data_recent[data_recent.like_1d_diff > 0])
     data_recent[data_recent.comment_1d_diff > 0][['title', 'artist', 'rank', 'rank_1d_before', 'rank_1d_diff', 'like', 'like_1d_before', 'like_1d_diff', 'comment', 'comment_1d_before', 'comment_1d_diff']].sort_values('comment_1d_diff', ascending=False).reset_index(drop=True).to_csv('./song/hot_song.csv', index=False, header=False)
+
     # hot_singer
-    data_recent.artist.value_counts().reset_index().rename(columns = {'index' : 'artist', 'artist': 'count'}).to_csv('./singer/hot_singer.csv', index=False, header=False)
+    data_recent.artist.value_counts().reset_index().rename(columns = {'index' : 'artist', 'artist': 'count'}).iloc[0, :].to_dict()
+    
     # genre
     genre = data_recent.groupby('genre').title.count().sort_values(ascending=False)
     genre_others = {'genre': '기타', 'title': genre[set(genre.index) - set(genre.head(5).index)].sum()}
     genre = genre[genre.head(5).index].to_frame().reset_index().append(genre_others, ignore_index=True).set_index('genre')
-    # data_recent.groupby('genre').title.count().to_csv('./genre_all.csv')
-    # genre.to_csv('./genre.csv')
+
     # oldest
     oldest = data_recent[(data_recent.duration >= 730)].sort_values(by="duration")[['artist', 'title', 'duration']].reset_index(drop=True)
     oldest_result = oldest.iloc[random.choice(list(oldest.index))].to_dict()
@@ -238,5 +230,4 @@ def get_hot(self): # singer : 100개, song : 2400개
     return oldest_result
 
 if __name__ == '__main__':
-    # print(get_new_chart())
-    print(h_song())
+    print(get_new_chart())
