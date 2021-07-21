@@ -1,11 +1,9 @@
-# import pandas as pd
-# import matplotlib.pyplot as plt
-# from wordcloud import WordCloud, STOPWORDS
-# import sys, os
-# import numpy as np
-# os.chdir(sys.path[0])
-
-
+import pandas as pd
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud, STOPWORDS
+import sys, os
+import numpy as np
+os.chdir(sys.path[0])
 
 
 if __name__=='__main__':
@@ -16,4 +14,13 @@ if __name__=='__main__':
     for word in dataset.columns[1:]:
         frequency[word] = sum(dataset[word])
 
-    black_mage_mask = 
+    print(frequency)
+
+    fp = 'C:Windows/Fonts/impact.ttf'
+    wc = WordCloud(background_color="white", max_words=100, width=1000, height=800, font_path=fp)
+    plt.figure(figsize=(15,15))
+
+    wc = wc.generate_from_frequencies(frequency)
+    plt.imshow(wc)
+    plt.axis('off')
+    plt.show()
