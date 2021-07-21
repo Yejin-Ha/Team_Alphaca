@@ -20,7 +20,7 @@
 
         .contentbox_title {
             text-align: center;
-            margin-top: 70px;
+            margin-top: 150px;
             margin-bottom: 5%;
         }
 
@@ -36,12 +36,12 @@
             display: flex;
             padding: 0 130px;
             justify-content: space-around;
-            margin-bottom: 65px;
+            margin-bottom: 80px;
         }
 
         .contents {
             width: 33%;
-            height: 250px;
+            min-height: 250px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -129,7 +129,7 @@
         .arrow-box {
             display: flex;
             justify-content: center;
-            margin: 20px 0;
+            margin: 20px 0 40px 0;
         }
 
         .contents>h2 {
@@ -205,8 +205,9 @@
             </div>
 
             <div class="contents" style="background-color: #eef9ec;">
-                <h1><span style="color: #69de53;">{artist}</span>의 {title}이</h1>
-                <h1><span style="color: #69de53;">{발매일}</span>째</h1>
+                <h1><span style="color: #69de53;" id="love_artist"></span>의</h1>
+                <h1><span style="color: #69de53;" id="love_title"></span>이(가)</h1>
+                <h1><span style="color: #69de53;" id="love_date"></span>일째</h1>
                 <h1>사랑받고 있어요❤️</h1>
             </div>
 
@@ -228,10 +229,10 @@
 
             <div class="dashbord_1">
                 <h2>장르 점유율</h2>
-                <iframe src="http://localhost:5601/goto/e6a948f46e9640a81111ab601fc3c561" height="380"
+                <iframe src="http://localhost:5601/goto/5edd95b3050ec362b18f2d94e543129a" height="380"
                     width="380"></iframe>
                 <h2>가수 점유율</h2>
-                <iframe src="http://localhost:5601/goto/9544a81fce83ac0291fcaf301333ffdc" height="380"
+                <iframe src="http://localhost:5601/goto/5edd95b3050ec362b18f2d94e543129a" height="380"
                     width="380"></iframe>
                 <h2></h2>
             </div>
@@ -260,6 +261,7 @@
         let song = '{{song}}';
         let chart = '{{chart}}';
         let all_genre = '{{all_genre}}';
+        let oldest = '{{oldest}}';
 
         song = song.replaceAll("&#39;", "'");
         hsinger = hsinger.replaceAll("&#39;", "'");
@@ -267,20 +269,30 @@
         chart = chart.replaceAll("&amp;", "&");
         chart = chart.replaceAll("&#34;", '"');
         all_genre = all_genre.replaceAll("&#39;", "'");
+        oldest = oldest.replaceAll("&#39;", "'");
 
         hsinger = "[" + hsinger + "]"
         song = "[" + song + "]"
+        oldest = "[" + oldest + "]"
 
         song = eval(song);
         hsinger = eval(hsinger);
         chart = eval(chart);
         all_genre = eval(all_genre);
+        oldest = eval(oldest);
 
         document.getElementById('hot_song').innerText = song[0]['artist'] + " - " + song[0]['title']
+        document.getElementById('love_artist').innerText = oldest[0]['artist']
+        document.getElementById('love_title').innerText = oldest[0]['title']
+        document.getElementById('love_date').innerText = oldest[0]['duration']
         document.getElementById('hot_singer').innerHTML = `<span id='highlight'>${hsinger[0]['artist']}</span>입니다`
         document.getElementById('detail_hot_singer').innerText = hsinger[0]['count'] + "곡이나 있다구요ヽ(°〇°)ﾉ!!"
-        document.getElementById('chart-time').innerText = chart[0]['date']
-
+        var year = chart[0]['date'].substr(0, 4)
+        var month = chart[0]['date'].substr(5, 2)
+        var day = chart[0]['date'].substr(8, 2)
+        var hour = chart[0]['date'].substr(11, 2)
+        var tmp = year + "년 " + month + "월 " + day + "일 " + hour + "시 기준"
+        document.getElementById('chart-time').innerText = tmp
         let genre_btns = '<button id="btn" onclick=genre_chart("all")>전체</button>';
 
         for (i = 0; i < all_genre.length; i++) {

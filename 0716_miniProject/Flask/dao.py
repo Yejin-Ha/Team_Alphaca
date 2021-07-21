@@ -213,10 +213,10 @@ def get_hot(): # singer : 100개, song : 2400개
     genre = genre[genre.head(5).index].to_frame().reset_index().append(genre_others, ignore_index=True).set_index('genre')
 
     # hot_song
-    data_recent[data_recent.comment_1d_diff > 0][['title', 'artist', 'rank', 'rank_1d_before', 'rank_1d_diff', 'like', 'like_1d_before', 'like_1d_diff', 'comment', 'comment_1d_before', 'comment_1d_diff']].sort_values('comment_1d_diff', ascending=False).reset_index(drop=True).to_csv('./song/hot_song.csv', index=False, header=False)
+    hot_song = data_recent[data_recent.comment_1d_diff > 0][['title', 'artist']].reset_index(drop=True).iloc[0, :].to_dict()
 
     # hot_singer
-    data_recent.artist.value_counts().reset_index().rename(columns = {'index' : 'artist', 'artist': 'count'}).iloc[0, :].to_dict()
+    hot_singer = data_recent.artist.value_counts().reset_index().rename(columns = {'index' : 'artist', 'artist': 'count'}).iloc[0, :].to_dict()
     
     # genre
     genre = data_recent.groupby('genre').title.count().sort_values(ascending=False)
@@ -227,7 +227,7 @@ def get_hot(): # singer : 100개, song : 2400개
     oldest = data_recent[(data_recent.duration >= 730)].sort_values(by="duration")[['artist', 'title', 'duration']].reset_index(drop=True)
     oldest_result = oldest.iloc[random.choice(list(oldest.index))].to_dict()
     
-    return oldest_result
+    return hot_song, oldest_result, hot_singer
 
 if __name__ == '__main__':
-    print(get_new_chart())
+    print(get_hot())
