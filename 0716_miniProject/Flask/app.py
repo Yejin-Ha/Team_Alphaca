@@ -8,11 +8,10 @@ app = Flask(__name__)
 @app.route('/', methods=['get'])
 def index():
     print('Open index page')
-    singer = h_singer()
-    songs = h_song()
+    hot_song, oldest_result, hot_singer = get_hot()
     chart, all_genre = get_new_chart()
     print('Load data from ES')
-    return render_template('index.html', singer=singer, song=songs, chart=chart, all_genre=all_genre)
+    return render_template('index.html', singer=hot_singer, oldest=oldest_result, song=hot_song, chart=chart, all_genre=all_genre)
 
 
 if __name__ == '__main__':
